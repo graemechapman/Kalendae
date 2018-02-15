@@ -77,9 +77,8 @@ var util = Kalendae.util = {
 			if(eventName === 'mousedown' && util.isTouchDevice()) {
 				//works on touch devices
 				elem.addEventListener('touchstart', listener, false);
-			} else {
-				elem.addEventListener(eventName, listener, false);
 			}
+			elem.addEventListener(eventName, listener, false);
 		}
 		return listener;
 	},
