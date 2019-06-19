@@ -834,6 +834,21 @@ var util = Kalendae.util = {
 		}
 	},
 
+	throttle: function (fn, delay) {
+		util.timeout = null;
+		return function() {
+			if (util.timeout) {
+				return;
+			}
+
+			util.timeout = setTimeout(function() {
+				util.timeout = null;
+			}, delay);
+
+			fn();
+		};
+	},
+
 	// Adds a listener callback to a DOM element which is fired on a specified
 	// event.  Callback is sent the event object and the element that triggered the event
 	addEvent: function (elem, eventName, callback) {
@@ -855,10 +870,9 @@ var util = Kalendae.util = {
 		} else { // Other browsers.
 			if(eventName === 'mousedown' && util.isTouchDevice()) {
 				//works on touch devices
-				elem.addEventListener('touchstart', listener, false);
-			} else {
-				elem.addEventListener(eventName, listener, false);
+				elem.addEventListener('touchstart', util.throttle(listener, 400), false);
 			}
+			elem.addEventListener(eventName, util.throttle(listener, 400), false);
 		}
 		return listener;
 	},
